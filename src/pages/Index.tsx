@@ -1,14 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import Layout from '@/components/Layout';
+import HomePage from '@/pages/HomePage';
+import EventsPage from '@/pages/EventsPage';
+import ClubsPage from '@/pages/ClubsPage';
+import CalendarPage from '@/pages/CalendarPage';
+import CreatePage from '@/pages/CreatePage';
 
-const Index = () => {
+type Page = 'home' | 'events' | 'clubs' | 'calendar' | 'create';
+
+export default function Index() {
+  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const notificationCount = 2;
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home': return <HomePage onNavigate={setCurrentPage} />;
+      case 'events': return <EventsPage />;
+      case 'clubs': return <ClubsPage />;
+      case 'calendar': return <CalendarPage />;
+      case 'create': return <CreatePage />;
+      default: return <HomePage onNavigate={setCurrentPage} />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 color-black text-black">Добро пожаловать!</h1>
-        <p className="text-xl text-gray-600">тут будет отображаться ваш проект</p>
-      </div>
-    </div>
+    <Layout
+      currentPage={currentPage}
+      onNavigate={setCurrentPage}
+      notificationCount={notificationCount}
+    >
+      {renderPage()}
+    </Layout>
   );
-};
-
-export default Index;
+}
